@@ -9,7 +9,7 @@
 
 @theme {
 	--font-sans: "Karmina Bold", sans-serif;
-	--cursor-pointer: url(/images/hand_point_small.png) 8 4, pointer;
+	--cursor-pointer: url(/images/hand_point_small.png) 0 4, pointer;
 }
 
 @keyframes flash-red {
@@ -29,7 +29,7 @@
 }
 
 body {
-	@apply h-screen w-screen bg-[url("/images/temp_bg.png")] bg-cover bg-no-repeat cursor-[url(/images/hand_open_small.png)_8_8,default];
+	@apply h-screen w-screen cursor-[url(/images/hand_open_small.png)_4_4,default] bg-[url("/images/temp_bg.png")] bg-cover bg-no-repeat;
 }
 
 span,
@@ -58,4 +58,12 @@ h3 {
 
 button {
 	@apply select-text;
+}
+
+.braidoku-grid-header {
+	@apply leading-4;
+}
+
+.braidoku-grid-square {
+	@apply aspect-square cursor-[url('/images/hand_point_small.png')_0_4,pointer] bg-[url(/images/box.png)] bg-contain bg-center bg-no-repeat;
 }

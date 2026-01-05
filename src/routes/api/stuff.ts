@@ -1,11 +1,11 @@
 export const ALL_CATEGORIES = ["puzzleboard", "goomba", "rabbit", "key", "green piece", "green key", "cloud", "firepit", "lever", "flagpole", "trellis", "2+ ladders", "1 piece", "no piece", "vertical platform", "plant", "star", "world 1", "world 2", "world 3", "world 4", "world 5", "world 6"] as const;
-export type Categories = (typeof ALL_CATEGORIES)[number];
+export type Category = (typeof ALL_CATEGORIES)[number];
 
 export interface Level {
 	name?: string;
 	world: number;
 	level: number;
-	categories: Categories[];
+	categories: Category[];
 }
 
 export const levels: Level[] = [

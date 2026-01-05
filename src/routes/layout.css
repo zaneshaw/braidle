@@ -9,6 +9,7 @@
 
 @theme {
 	--font-sans: "Karmina Bold", sans-serif;
+	--cursor-pointer: url(/images/hand_point_small.png) 8 4, pointer;
 }
 
 @keyframes flash-red {
@@ -28,7 +29,7 @@
 }
 
 body {
-	@apply h-screen w-screen bg-[url("/images/temp_bg.png")] bg-cover bg-no-repeat;
+	@apply h-screen w-screen bg-[url("/images/temp_bg.png")] bg-cover bg-no-repeat cursor-[url(/images/hand_open_small.png)_8_8,default];
 }
 
 span,

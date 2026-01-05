@@ -1,1 +1,59 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+
+@font-face {
+	font-family: "Charis SIL";
+	font-style: normal;
+	font-display: swap;
+	src: url("/fonts/russian.ttf") format("truetype");
+}
+
+@theme {
+	--font-sans: "Charis SIL", sans-serif;
+}
+
+@keyframes flash-red {
+	0%,
+	20% {
+		color: white;
+	}
+
+	60% {
+		color: red;
+	}
+
+	85%,
+	100% {
+		color: #660000;
+	}
+}
+
+body {
+	@apply h-screen w-screen bg-[url("/images/temp_bg.png")] bg-cover bg-no-repeat;
+}
+
+span,
+p {
+	@apply text-black text-shadow-[1px_1px_white];
+}
+
+h1,
+h2,
+h3 {
+	@apply text-white [font-variant:small-caps];
+}
+
+h1 {
+	@apply text-8xl tracking-wide text-shadow-[3px_3px_black];
+}
+
+h2 {
+	@apply text-3xl tracking-wide text-shadow-[1.5px_1.25px_black];
+}
+
+h3 {
+	@apply text-2xl tracking-wide text-shadow-[1.5px_1.25px_black];
+}
+
+button {
+	@apply select-text;
+}

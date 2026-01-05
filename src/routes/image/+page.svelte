@@ -3,7 +3,7 @@
 </script>
 
 <div class="bg-red-500/20 px-3 py-1 text-center">
-	<h3>Guess today's Level</h3>
+	<h2>Guess today's Image</h2>
 	<span>Below is a snippet of a level from Braid. Try to guess which level it's from. After 4 failed guesses, the world will be revealed.</span>
 </div>
 

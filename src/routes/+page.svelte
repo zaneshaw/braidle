@@ -3,7 +3,8 @@
 </script>
 
 <div class="flex flex-col gap-3">
-	<GameButton href="/level" iconSrc="/images/temp_door.png" label="Level" description="Guess the level from a cropped image." />
+	<GameButton href="/image" iconSrc="/images/temp_door.png" label="Image" description="Guess the level from a cropped image." />
 	<GameButton href="/puzzle_piece" iconSrc="/images/temp_door.png" label="Puzzle Piece" description="Guess the level from a puzzle piece." />
-	<GameButton href="/elements" iconSrc="/images/temp_door.png" label="Elements" description="Guess the level from a list of elements." />
+	<GameButton href="/braidoku" iconSrc="/images/temp_door.png" label="Braidoku" description="Guess the levels from their categories." />
+	<GameButton href="/elements" iconSrc="/images/temp_door.png" label="Elements" description="Guess the level from its count of elements." />
 </div>

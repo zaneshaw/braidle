@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 @font-face {
-	font-family: "Charis SIL";
+	font-family: "Karmina Bold";
 	font-style: normal;
 	font-display: swap;
-	src: url("/fonts/russian.ttf") format("truetype");
+	src: url("/fonts/Karmina Bold.otf") format("opentype");
 }
 
 @theme {
-	--font-sans: "Charis SIL", sans-serif;
+	--font-sans: "Karmina Bold", sans-serif;
 }
 
 @keyframes flash-red {
@@ -33,7 +33,8 @@ body {
 
 span,
 p {
-	@apply text-black text-shadow-[1px_1px_white];
+	@apply text-neutral-100 text-shadow-[1px_1px_black];
+	/* @apply text-black text-shadow-[1px_1px_white]; */
 }
 
 h1,

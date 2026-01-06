@@ -18,7 +18,7 @@
 
 <svelte:head>
 	<title>Braidle</title>
-	<link rel="icon" href="/images/favicon.ico" />
+	<link rel="icon" href="/favicon.ico" />
 </svelte:head>
 
 <div class="mx-auto flex h-full w-100 flex-col gap-5 py-5">

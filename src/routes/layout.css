@@ -28,8 +28,12 @@
 	}
 }
 
+html {
+	@apply min-h-screen cursor-[url(/images/hand_open_small.png)_4_4,default] bg-[url("/images/temp_bg.png")] bg-cover bg-fixed bg-no-repeat;
+}
+
 body {
-	@apply h-screen w-screen cursor-[url(/images/hand_open_small.png)_4_4,default] bg-[url("/images/temp_bg.png")] bg-cover bg-no-repeat;
+	@apply overflow-y-scroll;
 }
 
 span,

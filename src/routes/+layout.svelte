@@ -22,10 +22,10 @@
 </svelte:head>
 
 <div class="mx-auto flex h-full w-100 flex-col gap-5 py-5">
-	<a href="/" class="cursor-pointer text-center">
-		<h1>Braidle</h1>
+	<div class="text-center">
+		<a href="/" class="cursor-pointer"><h1>Braidle</h1></a>
 		<h3>Test your Braid knowledge</h3>
-	</a>
+	</div>
 	{@render children()}
 </div>
 

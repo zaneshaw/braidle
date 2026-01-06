@@ -6,6 +6,7 @@ export interface Level {
 	world: number;
 	level: number;
 	categories: Category[];
+	pieces?: string[];
 }
 
 export const levels: Level[] = [
@@ -46,64 +47,83 @@ export const levels: Level[] = [
 		world: 2,
 		level: 1,
 		categories: ["trellis", "goomba", "2+ ladders", "firepit", "world 2"],
+		pieces: ["/images/pieces/2-1-1.webp", "/images/pieces/2-1-2.webp", "/images/pieces/2-1-3.webp"],
 	},
 	{
 		name: "The Cloud Bridge",
 		world: 2,
 		level: 2,
 		categories: ["firepit", "goomba", "puzzleboard", "cloud", "key", "star", "world 2"],
+		pieces: ["/images/pieces/2-2-1.webp", "/images/pieces/2-2-2.webp", "/images/pieces/2-2-3.webp", "/images/pieces/2-2-4.webp"],
 	},
 	{
 		name: "Hunt!",
 		world: 2,
 		level: 3,
 		categories: ["goomba", "1 piece", "2+ ladders", "world 2"],
+		pieces: ["/images/pieces/2-3-1.webp"],
 	},
 	{
 		name: "Leap of Faith",
 		world: 2,
 		level: 4,
 		categories: ["2+ ladders", "goomba", "flagpole", "flagpole", "lever", "firepit", "world 2"],
+		pieces: ["/images/pieces/2-4-1.webp", "/images/pieces/2-4-2.webp", "/images/pieces/2-4-3.webp", "/images/pieces/2-4-4.webp"],
 	},
-
 	{
+		name: "The Pit",
 		world: 3,
 		level: 1,
 		categories: ["green key", "goomba", "no piece", "key", "world 3"],
 	},
 	{
+		name: "There and Back Again",
 		world: 3,
 		level: 2,
 		categories: ["trellis", "1 piece", "goomba", "vertical platform", "key", "green key", "world 3"],
+		pieces: ["/images/pieces/3-2-1.webp"],
 	},
 	{
+		name: "Phase",
 		world: 3,
 		level: 3,
 		categories: ["cloud", "trellis", "world 3"],
+		pieces: ["/images/pieces/3-3-1.webp", "/images/pieces/3-3-2.webp"],
 	},
 	{
+		name: "The Ground Beneath Her Feet",
 		world: 3,
 		level: 4,
 		categories: ["green piece", "goomba", "key", "lever", "firepit", "2+ ladders", "world 3"],
+		pieces: ["/images/pieces/3-4-1.webp", "/images/pieces/3-4-2.webp"],
 	},
 	{
+		name: "Tight Channels",
 		world: 3,
 		level: 5,
 		categories: ["rabbit", "2+ ladders", "plant", "firepit", "world 3"],
+		pieces: ["/images/pieces/3-5-1.webp", "/images/pieces/3-5-2.webp"],
 	},
 	{
+		name: "Irreversible",
 		world: 3,
 		level: 6,
 		categories: ["vertical platform", "rabbit", "plant", "goomba", "firepit", "puzzleboard", "2+ ladders", "green key", "key", "world 3"],
+		pieces: ["/images/pieces/3-6-1.webp", "/images/pieces/3-6-2.webp", "/images/pieces/3-6-3.webp"],
 	},
 	{
+		name: "Lair",
 		world: 3,
 		level: 7,
 		categories: ["no piece", "trellis", "goomba", "firepit", "key", "green key", "world 3"],
 	},
 	{
+		name: "A Tingling",
 		world: 3,
 		level: 8,
 		categories: ["flagpole", "vertical platform", "key", "goomba", "2+ ladders", "trellis", "firepit", "rabbit", "lever", "green piece", "world 3"],
+		pieces: ["/images/pieces/3-8-1.webp", "/images/pieces/3-8-2.webp"],
 	},
 ];
+
+export const hasPieces = (levels: Level[]) => levels.filter((level) => level.pieces);

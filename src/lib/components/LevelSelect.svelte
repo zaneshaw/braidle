@@ -36,7 +36,7 @@
 </script>
 
 <div class="flex w-full items-center justify-center">
-	<button use:melt={$trigger} class="flex h-10 grow cursor-pointer items-center justify-between bg-red-500/20">Select a level</button>
+	<button use:melt={$trigger} class="flex h-10 grow cursor-pointer items-center justify-between bg-red-500/20 px-5"><span>Select a level ▼</span></button>
 	{#if $open}
 		<div use:melt={$menu} class="z-10 flex max-h-0 flex-col overflow-y-auto bg-white shadow">
 			{#each worlds as world, i}

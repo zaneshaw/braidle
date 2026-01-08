@@ -1,7 +1,7 @@
 <script lang="ts">
 	import LevelSelect from "$lib/components/LevelSelect.svelte";
-	import type { PageProps } from "./$types";
 	import { Game } from "$lib/game.svelte";
+	import type { PageProps } from "./$types";
 
 	let { data }: PageProps = $props();
 

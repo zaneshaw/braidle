@@ -1,3 +1,4 @@
+import { browser } from "$app/environment";
 import { DateTime } from "luxon";
 
 interface GameGuess {
@@ -31,11 +32,13 @@ export class Game {
 			stats: { wins: new Array(gameLength).fill(0), losses: 0 },
 		};
 
-		this.load();
+		if (browser) {
+			this.load();
 
-		this.state = this.evaluateState();
+			this.state = this.evaluateState();
 
-		this.refreshDay();
+			this.refreshDay();
+		}
 	}
 
 	load() {

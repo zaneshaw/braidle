@@ -36,4 +36,4 @@
 	{@render children()}
 </div>
 
-<img bind:this={interactionArrow} src="/images/temp_arrow.png" alt="" class="pointer-events-none fixed z-100 opacity-0" />
+<img bind:this={interactionArrow} src="/images/interaction_arrow.png" alt="" class="pointer-events-none fixed z-100 w-8 opacity-0" />

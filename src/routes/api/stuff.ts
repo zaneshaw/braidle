@@ -11,26 +11,15 @@ export interface Level {
 
 export const levels: Level[] = [
 	{
-		world: 0,
-		level: 0,
-		categories: [],
-	},
-	{
 		name: "Epilogue",
 		world: 0,
 		level: 8,
 		categories: ["no piece", "key", "flagpole", "2+ ladders", "cloud", "lever"],
 	},
 	{
-		name: "Braid",
 		world: 1,
-		level: 1,
-		categories: ["star", "trellis", "2+ ladders", "goomba", "vertical platform", "firepit", "plant", "no piece", "lever", "world 1"],
-	},
-	{
-		world: 1,
-		level: 2,
-		categories: ["goomba", "no piece", "firepit", "2+ ladders", "world 1"],
+		level: 4,
+		categories: ["goomba", "no piece", "firepit", "world 1"],
 	},
 	{
 		world: 1,
@@ -39,8 +28,14 @@ export const levels: Level[] = [
 	},
 	{
 		world: 1,
-		level: 4,
-		categories: ["goomba", "no piece", "firepit", "world 1"],
+		level: 2,
+		categories: ["goomba", "no piece", "firepit", "2+ ladders", "world 1"],
+	},
+	{
+		name: "Braid",
+		world: 1,
+		level: 1,
+		categories: ["star", "trellis", "2+ ladders", "goomba", "vertical platform", "firepit", "plant", "no piece", "lever", "world 1"],
 	},
 	{
 		name: "Three Easy Pieces",

@@ -1,66 +1,81 @@
 import { json } from "@sveltejs/kit";
-import { ALL_CATEGORIES, type Category, levels, type Level } from "../stuff";
+import { ALL_CATEGORIES, type Category, levels } from "../stuff";
+import random from "random";
+import { DateTime } from "luxon";
 
 function randomCategories(quantity: number): Category[] {
 	const set = new Set<Category>();
 
 	while (set.size < quantity) {
-		set.add(ALL_CATEGORIES[Math.floor(Math.random() * ALL_CATEGORIES.length)]);
+		set.add(ALL_CATEGORIES[random.int(0, ALL_CATEGORIES.length - 1)]);
 	}
 
 	return Array.from(set);
 }
 
-// todo: only 1 allowed solution even though there might be multiple valid solutions
-function generate(): { columns: Category[]; rows: Category[]; grid: Level[][] } {
+function generate(): { columns: Category[]; rows: Category[]; grid: number[][][] } {
+	const minLevelsPerCell = 2;
+	const maxLevelsPerCell = 5;
+	const maxLevelOccurrences = 4; // how many times a level can appear on the board
+
 	let columns: Category[] = [];
 	let rows: Category[] = [];
-	let grid: Level[][] = [];
+	let grid: number[][][] = [];
 
-	let success = false;
-	while (!success) {
-		success = true;
-
+	generator: while (true) {
 		// get 6 random unique categories and assign them to columns and rows
 		const categories = randomCategories(6);
 		columns = [categories[0], categories[1], categories[2]];
 		rows = [categories[3], categories[4], categories[5]];
 
-		// initialise a 3x3 array for the grid. indexed by row then column
+		// init a 3x3 array for the grid. indexed by columns
 		grid = new Array(3).fill(0).map(() => new Array(3));
 
-		outerLoop: for (let row = 0; row < 3; row++) {
+		// for every cell, find every level that matches the cell's categories
+		for (let row = 0; row < 3; row++) {
 			for (let col = 0; col < 3; col++) {
-				// get an array of levels that match both categories
-				const matches = levels.filter((level) => level.categories.includes(columns[col]) && level.categories.includes(rows[row]));
+				grid[col][row] = levels.filter((level) => level.categories.includes(columns[col]) && level.categories.includes(rows[row])).map((level) => levels.indexOf(level));
+			}
+		}
 
-				// if there are no matches, break out of the loop and start over
-				if (matches.length == 0) {
-					success = false;
-					break outerLoop;
-				}
+		// validation
+		const counts: { [key: string]: number } = {};
+		for (const cell of grid.flat()) {
+			// if the cell has too little or too many levels, fail
+			if (cell.length < minLevelsPerCell || cell.length > maxLevelsPerCell) {
+				continue generator;
+			}
 
-				// pick a random matching level as the correct answer (not good. should rank them instead and allow all matches as answers.)
-				const matchesIndex = Math.floor(Math.random() * matches.length);
+			// add each of the cell's levels to a counting dictionary
+			for (const levelIndex of cell) {
+				counts[levelIndex] = counts[levelIndex] ? counts[levelIndex] + 1 : 1;
 
-				// true if this level isn't an answer on the grid yet
-				const isUnique = !grid.flat().some((cell) => cell.level == matches[matchesIndex].level && cell.world == matches[matchesIndex].world);
-
-				// if the match is unique, add it to the grid. else break out of the loop and start over
-				if (isUnique) {
-					grid[col][row] = matches[matchesIndex];
-				} else {
-					success = false;
-					break outerLoop;
+				// if a level's count exceeds the maximum, fail
+				if (counts[levelIndex] > maxLevelOccurrences) {
+					continue generator;
 				}
 			}
 		}
+
+		console.log(counts);
+
+		break;
 	}
 
 	return { columns, rows, grid };
 }
 
-export async function GET() {
+export async function GET({ url }) {
+	if (!url.searchParams.has("tz")) return new Response(null, { status: 400 });
+
+	const date = DateTime.now()
+		.setZone(url.searchParams.get("tz") as string)
+		.toISODate();
+
+	if (date == undefined) return new Response(null, { status: 500 });
+
+	random.use(date);
+
 	const board = generate();
 
 	return json(board);

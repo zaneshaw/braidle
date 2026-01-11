@@ -69,5 +69,5 @@ button {
 }
 
 .braidoku-grid-square {
-	@apply aspect-square cursor-[url('/images/hand_point_small.png')_0_4,pointer] bg-[url(/images/box.png)] bg-contain bg-center bg-no-repeat;
+	@apply aspect-square cursor-[url('/images/hand_point_small.png')_0_4,pointer] bg-[url(/images/box.png)] bg-contain bg-center bg-no-repeat leading-4;
 }

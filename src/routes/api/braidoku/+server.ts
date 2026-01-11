@@ -28,13 +28,13 @@ function generate(): { columns: Category[]; rows: Category[]; grid: number[][][]
 		columns = [categories[0], categories[1], categories[2]];
 		rows = [categories[3], categories[4], categories[5]];
 
-		// init a 3x3 array for the grid. indexed by columns
+		// init a 3x3 array for the grid. indexed by rows
 		grid = new Array(3).fill(0).map(() => new Array(3));
 
 		// for every cell, find every level that matches the cell's categories
 		for (let row = 0; row < 3; row++) {
 			for (let col = 0; col < 3; col++) {
-				grid[col][row] = levels.filter((level) => level.categories.includes(columns[col]) && level.categories.includes(rows[row])).map((level) => levels.indexOf(level));
+				grid[row][col] = levels.filter((level) => level.categories.includes(columns[col]) && level.categories.includes(rows[row])).map((level) => levels.indexOf(level));
 			}
 		}
 

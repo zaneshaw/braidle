@@ -19,17 +19,17 @@
 
 			<span class="braidoku-grid-header">{data.rows[0]}</span>
 			<span class="braidoku-grid-square">{@html data.grid[0][0].join("<br />")}</span>
-			<span class="braidoku-grid-square">{@html data.grid[1][0].join("<br />")}</span>
-			<span class="braidoku-grid-square">{@html data.grid[2][0].join("<br />")}</span>
+			<span class="braidoku-grid-square">{@html data.grid[0][1].join("<br />")}</span>
+			<span class="braidoku-grid-square">{@html data.grid[0][2].join("<br />")}</span>
 
 			<span class="braidoku-grid-header">{data.rows[1]}</span>
-			<span class="braidoku-grid-square">{@html data.grid[0][1].join("<br />")}</span>
+			<span class="braidoku-grid-square">{@html data.grid[1][0].join("<br />")}</span>
 			<span class="braidoku-grid-square">{@html data.grid[1][1].join("<br />")}</span>
-			<span class="braidoku-grid-square">{@html data.grid[2][1].join("<br />")}</span>
+			<span class="braidoku-grid-square">{@html data.grid[1][2].join("<br />")}</span>
 
 			<span class="braidoku-grid-header">{data.rows[2]}</span>
-			<span class="braidoku-grid-square">{@html data.grid[0][2].join("<br />")}</span>
-			<span class="braidoku-grid-square">{@html data.grid[1][2].join("<br />")}</span>
+			<span class="braidoku-grid-square">{@html data.grid[2][0].join("<br />")}</span>
+			<span class="braidoku-grid-square">{@html data.grid[2][1].join("<br />")}</span>
 			<span class="braidoku-grid-square">{@html data.grid[2][2].join("<br />")}</span>
 		{/if}
 	</div>

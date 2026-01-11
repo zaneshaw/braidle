@@ -9,7 +9,7 @@
 	function handleMouseMove(e: MouseEvent) {
 		const target = e.target as HTMLElement;
 
-		interactionArrow.style.top = `${e.clientY - interactionArrow.clientHeight - 15}px`;
+		interactionArrow.style.top = `${e.clientY - interactionArrow.clientHeight - 20}px`;
 		interactionArrow.style.left = `${e.clientX - interactionArrow.clientWidth / 2}px`;
 		interactionArrow.style.opacity = target.closest(".interaction-arrow") ? "1" : "0";
 	}
@@ -36,4 +36,4 @@
 	{@render children()}
 </div>
 
-<img bind:this={interactionArrow} src="/images/interaction_arrow.png" alt="" class="pointer-events-none fixed z-100 w-8 opacity-0" />
+<img bind:this={interactionArrow} src="/images/interaction_arrow.png" alt="" class="pointer-events-none fixed z-100 w-8 opacity-0 transition-opacity" />

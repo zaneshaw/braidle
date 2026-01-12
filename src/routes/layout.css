@@ -33,7 +33,7 @@ html {
 }
 
 body {
-	@apply overflow-y-scroll;
+	@apply relative min-h-screen overflow-y-scroll pb-52;
 }
 
 span,

@@ -4,7 +4,7 @@
 	let { game }: { game: Game } = $props();
 </script>
 
-<div class="flex flex-col bg-neutral-500 p-5">
+<div class="flex flex-col bg-box p-5">
 	<h3>Stats</h3>
 	<div class="flex justify-between">
 		<span>Days played</span>

@@ -68,6 +68,10 @@ button {
 	@apply hover:animate-[flash-red_0.6s_infinite_linear_alternate];
 }
 
+.bg-box {
+	@apply bg-[url(images/box2.png)] bg-size-[100%_100%];
+}
+
 .braidoku-grid-header {
 	@apply leading-4 capitalize;
 }

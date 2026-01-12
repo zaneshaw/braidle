@@ -48,13 +48,13 @@
 	})
 </script>
 
-<div class="bg-neutral-500 px-3 py-1 text-center">
+<div class="bg-box px-3 py-1 text-center">
 	<h2>Guess today's Puzzle Piece</h2>
 	<span>Below is a puzzle piece found in a specific level in Braid. You have 6 attempts to guess which level the piece is from.</span>
 </div>
 
 {#if data.status == "good"}
-	<div class="relative flex h-60 items-center justify-center bg-neutral-500">
+	<div class="relative flex h-60 items-center justify-center bg-box">
 		<span class="absolute top-2 right-4">Guesses: {game.data.todaysGuesses.length}/{game.gameLength}</span>
 		<img src={data.piece} alt="" class="size-45" />
 	</div>

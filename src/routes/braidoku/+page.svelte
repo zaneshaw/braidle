@@ -71,7 +71,7 @@
 {/snippet}
 
 <Modal bind:this={modal}>
-	<div class="w-150 bg-white p-10">
+	<div class="bg-box w-150 p-10">
 		<LevelSelect
 			onSelect={(level: string) => {
 				guess(selectedCell, level);
@@ -82,12 +82,12 @@
 	</div>
 </Modal>
 
-<div class="bg-neutral-500 px-3 py-1 text-center">
+<div class="bg-box px-3 py-1 text-center">
 	<h2>Solve today's Braidoku</h2>
 	<span>Fill each grid square with a level that falls under the stated categories.</span>
 </div>
 
-<div class="flex flex-col bg-neutral-500">
+<div class="bg-box flex flex-col p-2">
 	{#if data.status == "good"}
 		<span class="mx-auto mt-2">Guesses: {game.data.todaysGuesses.length}/{game.gameLength}</span>
 		<div class="grid size-full grid-cols-4 grid-rows-[1fr_2fr_2fr_2fr] gap-2 *:flex *:size-full *:items-center *:justify-center *:text-center">

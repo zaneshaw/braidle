@@ -4,9 +4,9 @@ export const load: PageLoad = async ({ fetch }) => {
 	const res = await fetch(`/api/braidoku?tz=${Intl.DateTimeFormat().resolvedOptions().timeZone}`);
 
 	if (res.ok) {
-		const { columns, rows, grid } = await res.json();
+		const { columns, rows } = await res.json();
 
-		return { status: "good", columns, rows, grid };
+		return { status: "good", columns, rows };
 	} else {
 		return { status: "bad" };
 	}

@@ -1,14 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { browser } from "$app/environment";
 import { DateTime } from "luxon";
 
-interface GameGuess {
-	guess: string;
-	correct: boolean;
-}
-
 interface GameData {
 	lastPlayed: string;
-	todaysGuesses: GameGuess[];
+	todaysGuesses: any[];
 	stats: {
 		wins: number[];
 		losses: number;
@@ -34,9 +31,6 @@ export class Game {
 
 		if (browser) {
 			this.load();
-
-			this.state = this.evaluateState();
-
 			this.refreshDay();
 		}
 	}
@@ -57,31 +51,10 @@ export class Game {
 		localStorage.setItem(this.id, JSON.stringify(this.data));
 	}
 
-	private evaluateState() {
-		if (this.data.todaysGuesses.length > 0 && this.data.todaysGuesses.at(-1)!.correct) {
-			return "win";
-		} else if (this.data.todaysGuesses.length >= this.gameLength) {
-			return "lose";
-		}
-
-		return "playing";
-	}
-
-	makeGuess(guess: GameGuess) {
+	makeGuess(guess: any) {
 		if (this.state != "playing") return;
 
 		this.data.todaysGuesses.push(guess);
-
-		this.state = this.evaluateState();
-
-		switch (this.state) {
-			case "win":
-				this.win();
-				break;
-			case "lose":
-				this.lose();
-				break;
-		}
 
 		this.save();
 	}

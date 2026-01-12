@@ -13,6 +13,7 @@ function randomCategories(quantity: number): Category[] {
 	return Array.from(set);
 }
 
+// todo: cache
 function generate(): { columns: Category[]; rows: Category[]; grid: number[][][] } {
 	const minLevelsPerCell = 2;
 	const maxLevelsPerCell = 5;
@@ -57,8 +58,6 @@ function generate(): { columns: Category[]; rows: Category[]; grid: number[][][]
 			}
 		}
 
-		console.log(counts);
-
 		break;
 	}
 
@@ -78,5 +77,16 @@ export async function GET({ url }) {
 
 	const board = generate();
 
-	return json(board);
+	if (url.searchParams.has("guess")) {
+		const [cellIndex, world, level] = url.searchParams
+			.get("guess")!
+			.split("-")
+			.map((x) => parseInt(x));
+
+		const correct = board.grid.flat()[cellIndex].some((levelIndex) => levels[levelIndex].world == world && levels[levelIndex].level == level);
+
+		return json({ correct });
+	} else {
+		return json({ columns: board.columns, rows: board.rows });
+	}
 }

@@ -2,7 +2,7 @@
 	import { createSelect, melt } from "@melt-ui/svelte";
 	import { onMount } from "svelte";
 
-	let { onSelect, hasPieces = false } = $props();
+	let { onSelect, hasPieces = false }: { onSelect: (level: string) => void; hasPieces?: boolean } = $props();
 
 	let worlds: any[] = $state([]);
 
@@ -38,13 +38,13 @@
 <div class="flex w-full items-center justify-center">
 	<button use:melt={$trigger} class="flex h-10 grow cursor-pointer items-center justify-between bg-red-500/20 px-5"><span>Select a level ▼</span></button>
 	{#if $open}
-		<div use:melt={$menu} class="z-10 flex max-h-0 flex-col overflow-y-auto bg-white shadow">
+		<div use:melt={$menu} class="z-50 flex max-h-0 flex-col overflow-y-auto bg-white shadow">
 			{#each worlds as world, i}
 				{#if world.length > 0}
 					<div>
 						<div class="pt-3 pr-4 pl-2 text-neutral-500">World {i}</div>
 						{#each world as level}
-							<div use:melt={$option({ value: `${level.world}-${level.level}` })} class="relative cursor-pointer py-1 pr-4 pl-6 text-neutral-800 hover:bg-cyan-100 hover:text-cyan-800 focus:z-10">
+							<div use:melt={$option({ value: `${level.world}-${level.level}` })} class="cursor-pointer py-1 pr-4 pl-6 text-neutral-800 hover:bg-cyan-100 hover:text-cyan-800">
 								{level.world}-{level.level}{level.name && `: ${level.name}`}
 							</div>
 						{/each}

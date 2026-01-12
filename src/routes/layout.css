@@ -29,7 +29,7 @@
 }
 
 html {
-	@apply min-h-screen cursor-[url(/images/hand_open_small.png)_4_4,default] bg-[url("/images/temp_bg.png")] bg-cover bg-fixed bg-no-repeat;
+	@apply min-h-screen cursor-[url(/images/hand_open_small.png)_4_4,default] bg-[url("/images/temp_bg.png")] bg-cover bg-fixed bg-center bg-no-repeat;
 }
 
 body {
@@ -62,6 +62,10 @@ h3 {
 
 button {
 	@apply select-text;
+}
+
+.link {
+	@apply hover:animate-[flash-red_0.6s_infinite_linear_alternate]
 }
 
 .braidoku-grid-header {

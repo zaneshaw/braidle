@@ -65,7 +65,7 @@ button {
 }
 
 .link {
-	@apply hover:animate-[flash-red_0.6s_infinite_linear_alternate]
+	@apply hover:animate-[flash-red_0.6s_infinite_linear_alternate];
 }
 
 .braidoku-grid-header {

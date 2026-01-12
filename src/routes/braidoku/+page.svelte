@@ -4,6 +4,7 @@
 	import { onMount, type SvelteComponent } from "svelte";
 	import type { PageProps } from "./$types";
 	import Modal from "$lib/components/Modal.svelte";
+	import Stats from "$lib/components/Stats.svelte";
 
 	let { data }: PageProps = $props();
 
@@ -63,9 +64,9 @@
 			selectedCell = index;
 			modal.open();
 		}}
-		class="braidoku-grid-square outline-2 {guess ? (guess?.correct ? 'outline-green-400' : 'outline-red-400') : 'outline-none'}"
+		class="braidoku-grid-square {guess ? (guess?.correct ? 'bg-[url(/images/box_green.png)]!' : 'bg-[url(/images/box_red.png)]!') : ''}"
 	>
-		{guess?.level ?? ""}
+		<span class="text-2xl">{guess?.level ?? ""}</span>
 	</button>
 {/snippet}
 
@@ -81,12 +82,12 @@
 	</div>
 </Modal>
 
-<div class="bg-red-500/20 px-3 py-1 text-center">
+<div class="bg-neutral-500 px-3 py-1 text-center">
 	<h2>Solve today's Braidoku</h2>
 	<span>Fill each grid square with a level that falls under the stated categories.</span>
 </div>
 
-<div class="flex flex-col bg-red-500/20">
+<div class="flex flex-col bg-neutral-500">
 	{#if data.status == "good"}
 		<span class="mx-auto mt-2">Guesses: {game.data.todaysGuesses.length}/{game.gameLength}</span>
 		<div class="grid size-full grid-cols-4 grid-rows-[1fr_2fr_2fr_2fr] gap-2 *:flex *:size-full *:items-center *:justify-center *:text-center">
@@ -113,18 +114,4 @@
 	{/if}
 </div>
 
-<div class="flex flex-col bg-red-500/20 p-5">
-	<h3>Stats</h3>
-	<div class="flex justify-between">
-		<span>Days played</span>
-		<span>{game.daysPlayed}</span>
-	</div>
-	<div class="flex justify-between">
-		<span>Wins</span>
-		<span>{game.data.stats.wins}</span>
-	</div>
-	<div class="flex justify-between">
-		<span>Losses</span>
-		<span>{game.data.stats.losses}</span>
-	</div>
-</div>
+<Stats {game} />

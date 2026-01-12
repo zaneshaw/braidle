@@ -3,6 +3,10 @@ import { ALL_CATEGORIES, type Category, levels } from "../stuff";
 import random from "random";
 import { DateTime } from "luxon";
 
+const board: { [key: string]: GenerateReturn } = {};
+
+type GenerateReturn = { columns: Category[]; rows: Category[]; grid: number[][][] };
+
 function randomCategories(quantity: number): Category[] {
 	const set = new Set<Category>();
 
@@ -13,12 +17,7 @@ function randomCategories(quantity: number): Category[] {
 	return Array.from(set);
 }
 
-// todo: cache
-function generate(): { columns: Category[]; rows: Category[]; grid: number[][][] } {
-	const minLevelsPerCell = 2;
-	const maxLevelsPerCell = 5;
-	const maxLevelOccurrences = 4; // how many times a level can appear on the board
-
+function generate(minLevelsPerCell: number, maxLevelsPerCell: number, maxLevelOccurrences: number): GenerateReturn {
 	let columns: Category[] = [];
 	let rows: Category[] = [];
 	let grid: number[][][] = [];
@@ -75,7 +74,9 @@ export async function GET({ url }) {
 
 	random.use(date);
 
-	const board = generate();
+	if (!board[date]) {
+		board[date] = generate(2, 5, 4);
+	}
 
 	if (url.searchParams.has("guess")) {
 		const [cellIndex, world, level] = url.searchParams
@@ -83,10 +84,10 @@ export async function GET({ url }) {
 			.split("-")
 			.map((x) => parseInt(x));
 
-		const correct = board.grid.flat()[cellIndex].some((levelIndex) => levels[levelIndex].world == world && levels[levelIndex].level == level);
+		const correct = board[date].grid.flat()[cellIndex].some((levelIndex) => levels[levelIndex].world == world && levels[levelIndex].level == level);
 
 		return json({ correct });
 	} else {
-		return json({ columns: board.columns, rows: board.rows });
+		return json({ columns: board[date].columns, rows: board[date].rows });
 	}
 }

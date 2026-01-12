@@ -63,7 +63,7 @@
 			selectedCell = index;
 			modal.open();
 		}}
-		class="braidoku-grid-square {guess ? (guess?.correct ? 'bg-green-400' : 'bg-red-400') : ''}"
+		class="braidoku-grid-square outline-2 {guess ? (guess?.correct ? 'outline-green-400' : 'outline-red-400') : 'outline-none'}"
 	>
 		{guess?.level ?? ""}
 	</button>

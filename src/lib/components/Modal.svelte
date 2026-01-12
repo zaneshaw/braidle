@@ -18,7 +18,7 @@
 		if (e.target == e.currentTarget) close();
 	}}
 	closedby="closerequest"
-	class="fixed top-0 left-0 size-full items-center justify-center bg-black/50 open:flex"
+	class="fixed top-0 left-0 size-full z-10 items-center justify-center bg-black/50 open:flex"
 >
 	{@render children()}
 </dialog>

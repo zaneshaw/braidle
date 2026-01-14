@@ -61,8 +61,10 @@
 	<button
 		aria-label="aga"
 		onclick={() => {
-			selectedCell = index;
-			modal.open();
+			if (game.state == "playing") {
+				selectedCell = index;
+				modal.open();
+			}
 		}}
 		class="braidoku-grid-square {guess ? (guess?.correct ? 'bg-[url(/images/box_green.png)]!' : 'bg-[url(/images/box_red.png)]!') : ''}"
 	>

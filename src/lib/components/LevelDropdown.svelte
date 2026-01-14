@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 
-	let { onSelect, hasPieces = false }: { onSelect: (level: string) => void; hasPieces?: boolean } = $props();
+	let { onSelect, hasPieces = false, disabled = false }: { onSelect: (level: string) => void; hasPieces?: boolean; disabled?: boolean } = $props();
 
 	let worlds: any[] = $state([]);
 
@@ -37,7 +37,12 @@
 <svelte:document onclick={documentOnClick} />
 
 <div bind:this={dropdownParent} class="relative flex w-full items-center justify-center">
-	<button onclick={() => (isOpen = !isOpen)} class="flex h-10 grow cursor-pointer items-center bg-neutral-500 px-5"><span>Select a level ▼</span></button>
+	<button
+		onclick={() => {
+			if (!disabled) isOpen = !isOpen;
+		}}
+		class="flex h-10 grow cursor-pointer items-center bg-neutral-500 px-5"><span>Select a level ▼</span></button
+	>
 	<div bind:this={dropdown} class="absolute bottom-0 left-0 z-50 size-20 max-h-max w-full translate-y-full flex-col overflow-y-auto bg-white shadow {isOpen ? 'flex' : 'hidden'}">
 		{#each worlds as world, i}
 			{#if world.length > 0}

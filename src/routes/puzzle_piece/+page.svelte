@@ -60,7 +60,7 @@
 	</div>
 {/if}
 
-<LevelSelect onSelect={(level: string) => guess(level)} hasPieces />
+<LevelSelect onSelect={(level: string) => guess(level)} hasPieces disabled={game.state != "playing"} />
 
 {#if game.data.todaysGuesses.length > 0}
 	<div class="flex flex-col-reverse gap-5 text-center">

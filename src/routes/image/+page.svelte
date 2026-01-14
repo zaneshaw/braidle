@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LevelSelect from "$lib/components/LevelSelect.svelte";
+	import LevelSelect from "$lib/components/LevelDropdown.svelte";
 </script>
 
 <div class="bg-box px-3 py-1 text-center">

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LevelSelect from "$lib/components/LevelSelect.svelte";
+	import LevelSelect from "$lib/components/LevelDropdown.svelte";
 	import { Game } from "$lib/game.svelte";
 	import { onMount, type SvelteComponent } from "svelte";
 	import type { PageProps } from "./$types";

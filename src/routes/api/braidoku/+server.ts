@@ -17,12 +17,22 @@ function randomCategories(quantity: number): Category[] {
 	return Array.from(set);
 }
 
-function generate(minLevelsPerCell: number, maxLevelsPerCell: number, maxLevelOccurrences: number): GenerateReturn {
+function generate(seed: string, minLevelsPerCell: number, maxLevelsPerCell: number, maxLevelOccurrences: number): GenerateReturn {
 	let columns: Category[] = [];
 	let rows: Category[] = [];
 	let grid: number[][][] = [];
+	let attempts = 0;
+
+	random.use(seed);
 
 	generator: while (true) {
+		// lol
+		if (attempts % 1000 == 0) {
+			random.use(seed += random.int(0, 999));
+		}
+
+		attempts++;
+
 		// get 6 random unique categories and assign them to columns and rows
 		const categories = randomCategories(6);
 		columns = [categories[0], categories[1], categories[2]];
@@ -72,10 +82,8 @@ export async function GET({ url }) {
 
 	if (date == undefined) return new Response(null, { status: 500 });
 
-	random.use(date);
-
 	if (!board[date]) {
-		board[date] = generate(2, 5, 4);
+		board[date] = generate(date, 2, 5, 4);
 	}
 
 	if (url.searchParams.has("guess")) {

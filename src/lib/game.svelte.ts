@@ -17,16 +17,18 @@ type GameState = "playing" | "win" | "lose" | undefined;
 export class Game {
 	id: string;
 	gameLength: number;
+	multipleWinStates: boolean;
 	state: GameState = $state();
 	data: GameData = $state<GameData>({} as GameData);
 
-	constructor(id: string, gameLength: number) {
+	constructor(id: string, gameLength: number, multipleWinStates: boolean = false) {
 		this.id = id;
 		this.gameLength = gameLength;
+		this.multipleWinStates = multipleWinStates;
 		this.data = {
 			lastPlayed: "0000-00-00",
 			todaysGuesses: [],
-			stats: { wins: new Array(gameLength).fill(0), losses: 0 },
+			stats: { wins: multipleWinStates  ? new Array(gameLength).fill(0) : [0], losses: 0 },
 		};
 
 		if (browser) {
@@ -65,7 +67,11 @@ export class Game {
 
 	win() {
 		console.log("YAY");
-		this.data.stats.wins[this.data.todaysGuesses.length - 1]++;
+		if (this.multipleWinStates) {
+			this.data.stats.wins[this.data.todaysGuesses.length - 1]++;
+		} else {
+			this.data.stats.wins[0]++;
+		}
 		this.save();
 	}
 

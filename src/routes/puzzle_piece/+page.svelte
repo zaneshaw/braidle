@@ -7,7 +7,7 @@
 
 	let { data }: PageProps = $props();
 
-	const game = new Game("puzzle_piece", 6);
+	const game = new Game("puzzle_piece", 6, true);
 
 	function evaluateState() {
 		if (game.data.todaysGuesses.length > 0 && game.data.todaysGuesses.at(-1)!.correct) {

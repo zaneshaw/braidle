@@ -1,1 +1,68 @@
 @import "tailwindcss";
+
+@font-face {
+	font-family: "Karmina Bold";
+	font-style: normal;
+	font-display: swap;
+	src: url("/fonts/Karmina Bold.otf") format("opentype");
+}
+
+@theme {
+	--font-sans: "Karmina Bold", sans-serif;
+	--cursor-pointer: url(/images/hand_point_small.png) 0 4, pointer;
+}
+
+@keyframes flash-red {
+	0%,
+	20% {
+		color: white;
+	}
+
+	60% {
+		color: red;
+	}
+
+	85%,
+	100% {
+		color: #660000;
+	}
+}
+
+html {
+	@apply min-h-screen cursor-[url(/images/hand_open_small.png)_4_4,default] bg-[url(/images/temp_bg.png)] bg-cover bg-fixed bg-center bg-no-repeat;
+}
+
+body {
+	@apply relative min-h-screen overflow-y-scroll pb-52;
+}
+
+span,
+p {
+	@apply text-neutral-100 text-shadow-[1px_1px_black];
+}
+
+h1,
+h2,
+h3 {
+	@apply text-white [font-variant:small-caps];
+}
+
+h1 {
+	@apply text-8xl tracking-wide text-shadow-[3px_3px_black];
+}
+
+h2 {
+	@apply text-3xl tracking-wide text-shadow-[1.5px_1.25px_black];
+}
+
+h3 {
+	@apply text-2xl tracking-wide text-shadow-[1.5px_1.25px_black];
+}
+
+button {
+	@apply select-text;
+}
+
+.link {
+	@apply cursor-pointer hover:animate-[flash-red_0.6s_infinite_linear_alternate];
+}

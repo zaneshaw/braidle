@@ -10,8 +10,8 @@
 	let { href, iconSrc, label, description, disabled = false }: Props = $props();
 </script>
 
-<a {href} class="group interaction-arrow flex cursor-pointer gap-4 bg-[url(/images/pipe.png)] bg-contain bg-center bg-no-repeat px-5 py-2 {disabled ? 'pointer-events-none opacity-50' : ''}">
-	<img src={iconSrc} alt="Game icon" class="h-16" />
+<a {href} class="group interaction-arrow flex cursor-pointer gap-4 bg-[url(/images/pipe.png)] bg-contain bg-center bg-no-repeat px-9 py-2 {disabled ? 'pointer-events-none opacity-50' : ''}">
+	<img src={iconSrc} alt="Game icon" class="h-12 my-2 icon-outline" />
 	<div class="flex grow flex-col justify-center text-left">
 		<h2 class="mt-1 leading-6 group-hover:animate-[flash-red_0.6s_infinite_linear_alternate]">{label}</h2>
 		<span>{description}</span>

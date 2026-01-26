@@ -26,6 +26,8 @@
 	let totalIncorrect = $derived(guesses.reduce((prev, curr) => prev + (curr.correct ? 0 : 1), 0));
 	let grade: Grade = $derived(getGrade(totalIncorrect));
 
+	let boardPromise = $state<Promise<any>>();
+
 	async function loadBoard() {
 		const url = new URL(`${PUBLIC_BACKEND_URL}/braidoku/board`);
 		url.searchParams.append("tz", timezone);
@@ -112,6 +114,8 @@
 
 			evaluateState();
 		}
+
+		boardPromise = loadBoard();
 	});
 </script>
 
@@ -148,36 +152,38 @@
 			{/each}
 		</div>
 	</div>
-	{#await loadBoard()}
-		<h3 class="text-center text-neutral-400!">Loading board...</h3>
-	{:then data}
-		<div class="grid size-full grid-cols-4 grid-rows-[1fr_2fr_2fr_2fr] gap-2 *:flex *:size-full *:items-center *:justify-center *:text-center">
-			<div></div>
-			<span class="braidoku-grid-header">{data.columns[0]}</span>
-			<span class="braidoku-grid-header">{data.columns[1]}</span>
-			<span class="braidoku-grid-header">{data.columns[2]}</span>
+	{#if boardPromise}
+		{#await boardPromise}
+			<h3 class="text-center text-neutral-400!">Loading board...</h3>
+		{:then data}
+			<div class="grid size-full grid-cols-4 grid-rows-[1fr_2fr_2fr_2fr] gap-2 *:flex *:size-full *:items-center *:justify-center *:text-center">
+				<div></div>
+				<span class="braidoku-grid-header">{data.columns[0]}</span>
+				<span class="braidoku-grid-header">{data.columns[1]}</span>
+				<span class="braidoku-grid-header">{data.columns[2]}</span>
 
-			<span class="braidoku-grid-header">{data.rows[0]}</span>
-			{@render gridSquare(0)}
-			{@render gridSquare(1)}
-			{@render gridSquare(2)}
+				<span class="braidoku-grid-header">{data.rows[0]}</span>
+				{@render gridSquare(0)}
+				{@render gridSquare(1)}
+				{@render gridSquare(2)}
 
-			<span class="braidoku-grid-header">{data.rows[1]}</span>
-			{@render gridSquare(3)}
-			{@render gridSquare(4)}
-			{@render gridSquare(5)}
+				<span class="braidoku-grid-header">{data.rows[1]}</span>
+				{@render gridSquare(3)}
+				{@render gridSquare(4)}
+				{@render gridSquare(5)}
 
-			<span class="braidoku-grid-header">{data.rows[2]}</span>
-			{@render gridSquare(6)}
-			{@render gridSquare(7)}
-			{@render gridSquare(8)}
-		</div>
-	{:catch err}
-		<div class="text-center">
-			<h3 class="text-red-700!">Failed to load board</h3>
-			<span class="text-red-800!">{err}</span>
-		</div>
-	{/await}
+				<span class="braidoku-grid-header">{data.rows[2]}</span>
+				{@render gridSquare(6)}
+				{@render gridSquare(7)}
+				{@render gridSquare(8)}
+			</div>
+		{:catch err}
+			<div class="text-center">
+				<h3 class="text-red-700!">Failed to load board</h3>
+				<span class="text-red-800!">{err}</span>
+			</div>
+		{/await}
+	{/if}
 </div>
 
 {#if data.mode != GameMode.unlimited}

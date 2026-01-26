@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { PUBLIC_BACKEND_URL } from "$env/static/public";
 	import Modal from "./Modal.svelte";
+	import { onMount } from "svelte";
 
 	let { onSelect = () => {}, beforeClose = () => {}, hasPieces = false }: { onSelect?: (world: number, level: number) => void; beforeClose?: () => void; hasPieces?: boolean } = $props();
+
+	let levelsPromise = $state<Promise<{ levels: any; levelsFiltered: any }>>();
 
 	let modal: Modal;
 
@@ -23,6 +26,10 @@
 
 		return { levels: data.levels, levelsFiltered: data.levels };
 	}
+
+	onMount(() => {
+		levelsPromise = getLevels();
+	});
 </script>
 
 {#snippet worldLevelButtons(world: any, worldFiltered: any)}
@@ -46,26 +53,28 @@
 {/snippet}
 
 <Modal bind:this={modal} {beforeClose} duckable class="p-5">
-	{#await getLevels()}
-		<h3>Loading levels...</h3>
-	{:then data}
-		<div class="flex flex-col gap-5">
-			<h2 class="text-center">Make Your Guess</h2>
-			<div class="flex gap-10">
-				<div class="flex flex-col gap-5">
-					{@render worldLevelButtons(data.levels[0], data.levelsFiltered[0])}
-					{@render worldLevelButtons(data.levels[1], data.levelsFiltered[1])}
-				</div>
-				<div class="flex flex-col gap-5">
-					{@render worldLevelButtons(data.levels[2], data.levelsFiltered[2])}
-					{@render worldLevelButtons(data.levels[3], data.levelsFiltered[3])}
-				</div>
-				<div class="flex flex-col gap-5">
-					{@render worldLevelButtons(data.levels[4], data.levelsFiltered[4])}
-					{@render worldLevelButtons(data.levels[5], data.levelsFiltered[5])}
-					{@render worldLevelButtons(data.levels[6], data.levelsFiltered[6])}
+	{#if levelsPromise}
+		{#await levelsPromise}
+			<h3>Loading levels...</h3>
+		{:then data}
+			<div class="flex flex-col gap-5">
+				<h2 class="text-center">Make Your Guess</h2>
+				<div class="flex gap-10">
+					<div class="flex flex-col gap-5">
+						{@render worldLevelButtons(data.levels[0], data.levelsFiltered[0])}
+						{@render worldLevelButtons(data.levels[1], data.levelsFiltered[1])}
+					</div>
+					<div class="flex flex-col gap-5">
+						{@render worldLevelButtons(data.levels[2], data.levelsFiltered[2])}
+						{@render worldLevelButtons(data.levels[3], data.levelsFiltered[3])}
+					</div>
+					<div class="flex flex-col gap-5">
+						{@render worldLevelButtons(data.levels[4], data.levelsFiltered[4])}
+						{@render worldLevelButtons(data.levels[5], data.levelsFiltered[5])}
+						{@render worldLevelButtons(data.levels[6], data.levelsFiltered[6])}
+					</div>
 				</div>
 			</div>
-		</div>
-	{/await}
+		{/await}
+	{/if}
 </Modal>

@@ -24,6 +24,8 @@
 	let totalIncorrect = $derived(guesses.reduce((prev, curr) => prev + (curr.correct ? 0 : 1), 0));
 	let grade: Grade = $derived(getGrade(totalIncorrect));
 
+	let imagePromise = $state<Promise<any>>();
+
 	async function loadImage() {
 		const url = new URL(`${PUBLIC_BACKEND_URL}/puzzle_piece/image`);
 		url.searchParams.append("tz", timezone);
@@ -102,6 +104,8 @@
 
 			evaluateState();
 		}
+
+		imagePromise = loadImage();
 	});
 </script>
 
@@ -126,28 +130,30 @@
 			</div>
 		{/each}
 	</div>
-	{#await loadImage()}
-		<h3 class="text-center text-neutral-400!">Loading puzzle piece...</h3>
-	{:then imageBase64}
-		<div class="flex justify-center bg-neutral-600 py-5">
-			<img src={imageBase64} alt="Braid puzzle piece" class="h-50" />
-		</div>
-		<button
-			onclick={() => {
-				if (gameState == "playing") {
-					levelsModal.getModal().open();
-				}
-			}}
-			class="btn w-full! bg-neutral-600!"
-		>
-			<span>Guess</span>
-		</button>
-	{:catch err}
-		<div class="text-center">
-			<h3 class="text-red-700!">Failed to puzzle piece</h3>
-			<span class="text-red-800!">{err}</span>
-		</div>
-	{/await}
+	{#if imagePromise}
+		{#await imagePromise}
+			<h3 class="text-center text-neutral-400!">Loading puzzle piece...</h3>
+		{:then imageBase64}
+			<div class="flex justify-center bg-neutral-600 py-5">
+				<img src={imageBase64} alt="Braid puzzle piece" class="h-50" />
+			</div>
+			<button
+				onclick={() => {
+					if (gameState == "playing") {
+						levelsModal.getModal().open();
+					}
+				}}
+				class="btn w-full! bg-neutral-600!"
+			>
+				<span>Guess</span>
+			</button>
+		{:catch err}
+			<div class="text-center">
+				<h3 class="text-red-700!">Failed to puzzle piece</h3>
+				<span class="text-red-800!">{err}</span>
+			</div>
+		{/await}
+	{/if}
 </div>
 
 {#if data.mode != GameMode.unlimited}

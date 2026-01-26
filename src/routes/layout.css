@@ -70,3 +70,11 @@ button {
 .icon-outline {
 	filter: drop-shadow(1.5px 0 0 white) drop-shadow(0 1.5px 0 white) drop-shadow(-1.5px 0 0 white) drop-shadow(0 -1.5px 0 white);
 }
+
+.bg-box {
+	@apply bg-neutral-700;
+}
+
+.braidoku-grid-header {
+	@apply leading-4 capitalize;
+}

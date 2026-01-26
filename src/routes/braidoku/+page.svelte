@@ -22,16 +22,16 @@
 	<span>Fill each grid square with any level that falls under the stated categories.</span>
 </div>
 
-<div class="bg-box p-5 gap-5 flex flex-col">
+<div class="bg-box flex flex-col gap-5 p-5">
 	{#await loadBoard()}
 		<h3 class="text-center text-neutral-400!">Loading board...</h3>
 	{:then data}
 		<div class="flex flex-col gap-0.5">
-			<div class="flex justify-between items-center">
+			<div class="flex items-center justify-between">
 				<span>Guesses: 0 / 9</span>
 				<span>Grade: S</span>
 			</div>
-			<div class="flex gap-1 overflow-hidden rounded-full h-2.5">
+			<div class="flex h-2.5 gap-1 overflow-hidden rounded-full">
 				<div class="grow bg-green-400"></div>
 				<div class="grow bg-green-400"></div>
 				<div class="grow bg-red-400"></div>
@@ -72,13 +72,13 @@
 	{/await}
 </div>
 
-<div class="bg-box px-5 py-3 flex flex-col gap-2">
+<div class="bg-box flex flex-col gap-2 px-5 py-3">
 	<h3 class="text-center">Stats</h3>
 	<div class="flex gap-2">
 		{#each [{ letter: "S", tip: "No fails" }, { letter: "A", tip: "1-3 fails" }, { letter: "B", tip: "4-6 fails" }, { letter: "C", tip: "7-8 fails" }, { letter: "F", tip: "9 fails" }] as grade}
-			<div class="aspect-square grow flex flex-col p-1 bg-neutral-600">
-				<span title={grade.tip} class="bg-neutral-700 cursor-help text-center text-lg leading-5">{grade.letter}</span>
-				<span class="grow flex justify-center items-center text-2xl">1</span>
+			<div class="flex aspect-square grow flex-col bg-neutral-600 p-1">
+				<span title={grade.tip} class="cursor-help bg-neutral-700 text-center text-lg leading-5">{grade.letter}</span>
+				<span class="flex grow items-center justify-center text-2xl">1</span>
 			</div>
 		{/each}
 	</div>

@@ -188,11 +188,9 @@
 	{:else if gameState == "lose"}
 		<h2>Game Over!</h2>
 		<h4>Your grade: <span class="text-red-400!">{grade}</span></h4>
-		<p>
-			You couldn't guess which level the puzzle piece was from within 6 guesses.
-		</p>
+		<p>You couldn't guess which level the puzzle piece was from within 6 guesses.</p>
 	{/if}
 	{#if data.mode == GameMode.unlimited}
-		<button onclick={() => location.reload()} class="btn">Generate a new board</button>
+		<button onclick={() => location.reload()} class="btn">Generate a new puzzle piece</button>
 	{/if}
 </Modal>

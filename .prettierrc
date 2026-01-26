@@ -2,9 +2,8 @@
 	"useTabs": true,
 	"singleQuote": false,
 	"trailingComma": "es5",
-	"printWidth": 999,
-	"plugins": ["prettier-plugin-svelte", "prettier-plugin-tailwindcss"],
-	"tailwindStylesheet": "./src/routes/layout.css",
+	"printWidth": 200,
+	"plugins": ["prettier-plugin-svelte", "@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
 	"overrides": [
 		{
 			"files": "*.svelte",
@@ -12,5 +11,6 @@
 				"parser": "svelte"
 			}
 		}
-	]
+	],
+	"tailwindStylesheet": "./src/routes/layout.css"
 }

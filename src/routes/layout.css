@@ -39,25 +39,29 @@ body {
 span,
 p {
 	@apply text-neutral-100 text-shadow-[1px_1px_black];
-	/* @apply text-black text-shadow-[1px_1px_white]; */
 }
 
 h1,
 h2,
-h3 {
-	@apply text-white [font-variant:small-caps];
+h3,
+h4 {
+	@apply tracking-wide text-white [font-variant:small-caps];
 }
 
 h1 {
-	@apply text-8xl tracking-wide text-shadow-[3px_3px_black];
+	@apply text-8xl text-shadow-[3px_3px_black];
 }
 
 h2 {
-	@apply text-3xl tracking-wide text-shadow-[1.5px_1.25px_black];
+	@apply text-3xl text-shadow-[1.5px_1.25px_black];
 }
 
 h3 {
-	@apply text-2xl tracking-wide text-shadow-[1.5px_1.25px_black];
+	@apply text-2xl text-shadow-[1.5px_1.25px_black];
+}
+
+h4 {
+	@apply text-xl text-shadow-[1.5px_1.25px_black];
 }
 
 button {
@@ -68,14 +72,18 @@ button {
 	@apply cursor-pointer hover:animate-[flash-red_0.6s_infinite_linear_alternate];
 }
 
+.btn {
+	@apply w-max cursor-pointer bg-neutral-800 px-3 py-1.5 text-white;
+}
+
+.icon-outline {
+	filter: drop-shadow(1.5px 0 0 white) drop-shadow(0 1.5px 0 white) drop-shadow(-1.5px 0 0 white) drop-shadow(0 -1.5px 0 white);
+}
+
 .bg-box {
-	@apply bg-[url(/images/box2.png)] bg-size-[100%_100%];
+	@apply bg-neutral-700;
 }
 
 .braidoku-grid-header {
 	@apply leading-4 capitalize;
-}
-
-.braidoku-grid-square {
-	@apply aspect-square cursor-pointer bg-[url(/images/box.png)] bg-contain bg-center bg-no-repeat leading-4;
 }

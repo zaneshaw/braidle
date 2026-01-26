@@ -1,5 +1,5 @@
 <script lang="ts">
-	import GameButton from "$lib/components/GameButton.svelte";
+	import GameButton from "$lib/components/MenuGameButton.svelte";
 	import { GameMode } from "$lib/types";
 
 	let mode: GameMode | undefined;
@@ -20,7 +20,7 @@
 
 <div class="flex flex-col gap-3">
 	<GameButton href="/braidoku" iconSrc="/images/icons/braidoku.png" label="Braidoku" description="Guess the levels from their categories." {mode} />
-	<GameButton href="/puzzle_piece" iconSrc="/images/icons/puzzle_piece.png" label="Puzzle Piece" description="Guess the level from a puzzle piece." {mode} disabled />
+	<GameButton href="/puzzle_piece" iconSrc="/images/icons/puzzle_piece.png" label="Puzzle Piece" description="Guess the level from a puzzle piece." {mode} />
 	<GameButton href="/image" iconSrc="/images/icons/image.png" label="Image" description="Guess the level from a cropped image." {mode} disabled />
 	<GameButton href="/elements" iconSrc="/images/icons/elements.png" label="Elements" description="Guess the level from its elements." {mode} disabled />
 </div>

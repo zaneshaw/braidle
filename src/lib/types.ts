@@ -8,3 +8,9 @@ export type BraidokuGuess = {
 	level: number;
 	correct: boolean;
 };
+
+export type PuzzlePieceGuess = {
+	world: number;
+	level: number;
+	correct: boolean;
+};

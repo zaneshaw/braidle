@@ -1,8 +1,9 @@
 <script lang="ts">
+	import GameHeader from "$lib/components/GameHeader.svelte";
+	import LevelsModal from "$lib/components/LevelsModal.svelte";
 	import Modal from "$lib/components/Modal.svelte";
-	import { braidokuStorage } from "$lib/stores/braidoku.js";
-	import { GameMode } from "$lib/types.js";
-	import { CircleQuestionMarkIcon } from "lucide-svelte";
+	import { braidokuPersisted } from "$lib/stores/persist.js";
+	import { GameMode, type BraidokuGuess } from "$lib/types.js";
 	import { onMount } from "svelte";
 
 	const unlimitedSeed = Math.random().toString(36).substring(2, 12);
@@ -12,14 +13,14 @@
 
 	type Grade = "S" | "A" | "B" | "C" | "F";
 
-	let guessModal: Modal;
+	let levelsModal: LevelsModal;
 	let selectedCell: number | undefined = $state();
 
 	let endModal: Modal;
 
 	let gameState: "playing" | "win" | "lose" = $state("playing");
 
-	let guesses: { index: number; world: number; level: number; correct: boolean }[] = $state([]);
+	let guesses: BraidokuGuess[] = $state([]);
 	let totalCorrect = $derived(guesses.reduce((prev, curr) => prev + (curr.correct ? 1 : 0), 0));
 	let totalIncorrect = $derived(guesses.reduce((prev, curr) => prev + (curr.correct ? 0 : 1), 0));
 	let grade: Grade = $derived(getGrade(totalIncorrect));
@@ -51,7 +52,7 @@
 
 		const resData = await res.json();
 
-		if (guesses.length < 9 && canGuess(cellIndex)) {
+		if (canGuess(cellIndex)) {
 			const guess = {
 				index: cellIndex,
 				world,
@@ -61,26 +62,19 @@
 
 			guesses = [...guesses, guess];
 			if (data.mode == undefined) {
-				$braidokuStorage.guesses = guesses;
+				$braidokuPersisted.guesses = guesses;
 			}
 		}
 
 		const newState = evaluateState();
 
 		if (resData.mode == undefined && newState != "playing") {
-			$braidokuStorage.incorrectHistory = [...$braidokuStorage.incorrectHistory, totalIncorrect];
+			$braidokuPersisted.incorrectHistory = [...$braidokuPersisted.incorrectHistory, totalIncorrect];
 		}
 	}
 
-	async function getLevels() {
-		const res = await fetch(`http://127.0.0.1:3000/levels`);
-		const data = await res.json();
-
-		return data;
-	}
-
 	function canGuess(cellIndex: number) {
-		return guesses.find((x) => x.index == cellIndex && x.correct) == undefined;
+		return gameState == "playing" && guesses.length < 9 && guesses.find((x) => x.index == cellIndex && x.correct) == undefined;
 	}
 
 	function evaluateState() {
@@ -97,23 +91,23 @@
 		return gameState;
 	}
 
-	function getGrade(incorrectGuess: number) {
+	function getGrade(incorrectGuesses: number) {
 		const grades = ["S", "A", "A", "B", "B", "B", "C", "C", "C"];
 
-		return (grades[incorrectGuess] || "F") as Grade;
+		return (grades[incorrectGuesses] || "F") as Grade;
 	}
 
 	onMount(() => {
 		if (data.mode == undefined) {
 			const today = new Date().toISOString().split("T")[0];
 
-			if ($braidokuStorage.today == undefined && $braidokuStorage.today != today) {
-				$braidokuStorage.today = today;
+			if ($braidokuPersisted.today == undefined && $braidokuPersisted.today != today) {
+				$braidokuPersisted.today = today;
 
-				$braidokuStorage.guesses = [];
+				$braidokuPersisted.guesses = [];
 			}
 
-			guesses = $braidokuStorage.guesses;
+			guesses = $braidokuPersisted.guesses;
 
 			evaluateState();
 		}
@@ -126,7 +120,7 @@
 		onclick={() => {
 			if (canGuess(index)) {
 				selectedCell = index;
-				guessModal.open();
+				levelsModal.getModal().open();
 			}
 		}}
 		class="aspect-square cursor-pointer bg-[url(/images/box.png)] bg-contain bg-center bg-no-repeat"
@@ -139,38 +133,23 @@
 	</button>
 {/snippet}
 
-{#if data.mode == GameMode.unlimited}
-	<div class="relative bg-yellow-500 p-2 text-center">
-		<h3>UNLIMITED MODE</h3>
-		<span
-			title="The board is randomised every time you load the page.&#013;Your progress is lost when you reload or leave!"
-			class="absolute top-1/2 right-3 -translate-y-1/2 cursor-help"
-		>
-			<CircleQuestionMarkIcon class="stroke-white drop-shadow-[1.5px_1.25px_black]" />
-		</span>
-	</div>
-{/if}
-
-<div class="bg-box px-5 py-3 text-center">
-	<h2>Solve today's Braidoku</h2>
-	<span>Fill each grid square with any level that falls under the stated categories.</span>
-</div>
+<GameHeader title="Solve today's Braidoku" instructions="Fill each grid square with any level that falls under the stated categories." mode={data.mode} />
 
 <div class="bg-box flex flex-col gap-5 p-5">
+	<div class="flex flex-col gap-0.5">
+		<div class="flex items-center justify-between">
+			<span>Guesses: {guesses.length} / 9</span>
+			<span>Grade: {guesses.length == 0 ? "?" : grade}</span>
+		</div>
+		<div class="flex h-2.5 gap-1 overflow-hidden rounded-full">
+			{#each { length: 9 } as _, i}
+				<div class:correct={guesses.at(i)?.correct} class:incorrect={guesses.at(i)?.correct == false} class="grow bg-neutral-600 [.correct]:bg-green-400 [.incorrect]:bg-red-400"></div>
+			{/each}
+		</div>
+	</div>
 	{#await loadBoard()}
 		<h3 class="text-center text-neutral-400!">Loading board...</h3>
 	{:then data}
-		<div class="flex flex-col gap-0.5">
-			<div class="flex items-center justify-between">
-				<span>Guesses: {guesses.length} / 9</span>
-				<span>Grade: {guesses.length == 0 ? "?" : grade}</span>
-			</div>
-			<div class="flex h-2.5 gap-1 overflow-hidden rounded-full">
-				{#each { length: 9 } as _, i}
-					<div class:correct={guesses.at(i)?.correct} class:incorrect={guesses.at(i)?.correct == false} class="grow bg-neutral-600 [.correct]:bg-green-400 [.incorrect]:bg-red-400"></div>
-				{/each}
-			</div>
-		</div>
 		<div class="grid size-full grid-cols-4 grid-rows-[1fr_2fr_2fr_2fr] gap-2 *:flex *:size-full *:items-center *:justify-center *:text-center">
 			<div></div>
 			<span class="braidoku-grid-header">{data.columns[0]}</span>
@@ -207,7 +186,7 @@
 				<span class=" text-lg leading-5">{grade}</span>
 			</div>
 			<span class="flex grow items-center justify-center text-2xl">
-				{$braidokuStorage.incorrectHistory.reduce((prev, curr) => prev + (getGrade(curr) == grade ? 1 : 0), 0)}
+				{$braidokuPersisted.incorrectHistory.reduce((prev, curr) => prev + (getGrade(curr) == grade ? 1 : 0), 0)}
 			</span>
 		</div>
 	{/snippet}
@@ -222,58 +201,22 @@
 			{@render gradeStat("F", "9 incorrect guesses")}
 		</div>
 		<div class="flex justify-between bg-neutral-600 px-3 py-1.5">
-			<span>Days played: {$braidokuStorage.incorrectHistory.length}</span>
-			<span>Wins: {$braidokuStorage.incorrectHistory.filter((incorrectGuesses) => incorrectGuesses == 0).length}</span>
-			<span>Losses: {$braidokuStorage.incorrectHistory.filter((incorrectGuesses) => incorrectGuesses > 0).length}</span>
+			<span>Days played: {$braidokuPersisted.incorrectHistory.length}</span>
+			<span>Wins: {$braidokuPersisted.incorrectHistory.filter((incorrectGuesses) => incorrectGuesses == 0).length}</span>
+			<span>Losses: {$braidokuPersisted.incorrectHistory.filter((incorrectGuesses) => incorrectGuesses > 0).length}</span>
 		</div>
 	</div>
 {/if}
 
-{#snippet worldLevelButtons(world: any)}
-	<div>
-		<h4 class="text-nowrap">{world.title}</h4>
-		{#each world.levels as level}
-			<button
-				onclick={() => {
-					if (selectedCell != undefined) {
-						makeGuess(selectedCell, world.world, level.level);
-					}
-
-					guessModal.close();
-				}}
-				class="flex w-full cursor-pointer items-center gap-1.5 p-1 text-nowrap hover:bg-neutral-600"
-			>
-				<div class="size-6 bg-neutral-500"></div>
-				<span>{world.world}-{level.level}{level.name ? `: ${level.name}` : ""}</span>
-			</button>
-		{/each}
-	</div>
-{/snippet}
-
-<Modal bind:this={guessModal} beforeClose={() => (selectedCell = undefined)} duckable class="p-5">
-	{#await getLevels()}
-		<span>loading...</span>
-	{:then data}
-		<div class="flex flex-col gap-5">
-			<h2 class="text-center">Make Your Guess</h2>
-			<div class="flex gap-10">
-				<div class="flex flex-col gap-5">
-					{@render worldLevelButtons(data.levels[0])}
-					{@render worldLevelButtons(data.levels[1])}
-				</div>
-				<div class="flex flex-col gap-5">
-					{@render worldLevelButtons(data.levels[2])}
-					{@render worldLevelButtons(data.levels[3])}
-				</div>
-				<div class="flex flex-col gap-5">
-					{@render worldLevelButtons(data.levels[4])}
-					{@render worldLevelButtons(data.levels[5])}
-					{@render worldLevelButtons(data.levels[6])}
-				</div>
-			</div>
-		</div>
-	{/await}
-</Modal>
+<LevelsModal
+	bind:this={levelsModal}
+	onSelect={(world, level) => {
+		if (selectedCell != undefined) {
+			makeGuess(selectedCell, world, level);
+		}
+	}}
+	beforeClose={() => (selectedCell = undefined)}
+/>
 
 <Modal bind:this={endModal} class="flex w-150! flex-col items-center p-5 text-center">
 	{#if gameState == "win"}

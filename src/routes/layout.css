@@ -72,6 +72,10 @@ button {
 	@apply cursor-pointer hover:animate-[flash-red_0.6s_infinite_linear_alternate];
 }
 
+.btn {
+	@apply w-max cursor-pointer bg-neutral-800 px-3 py-1.5 text-white;
+}
+
 .icon-outline {
 	filter: drop-shadow(1.5px 0 0 white) drop-shadow(0 1.5px 0 white) drop-shadow(-1.5px 0 0 white) drop-shadow(0 -1.5px 0 white);
 }

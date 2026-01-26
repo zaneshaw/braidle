@@ -2,7 +2,11 @@
 	import Modal from "$lib/components/Modal.svelte";
 	import { braidokuStorage } from "$lib/stores/braidoku.js";
 	import { GameMode } from "$lib/types.js";
+	import { CircleQuestionMarkIcon } from "lucide-svelte";
 	import { onMount } from "svelte";
+
+	const unlimitedSeed = Math.random().toString(36).substring(2, 12);
+	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 	let { data } = $props();
 
@@ -21,35 +25,49 @@
 	let grade: Grade = $derived(getGrade(totalIncorrect));
 
 	async function loadBoard() {
-		const res = await fetch("http://127.0.0.1:3000/braidoku/board?tz=Australia/Melbourne");
+		const url = new URL("http://127.0.0.1:3000/braidoku/board");
+		url.searchParams.append("tz", timezone);
+		if (data.mode == GameMode.unlimited) url.searchParams.append("seed", unlimitedSeed);
+
+		const res = await fetch(url);
 
 		if (res.ok) {
-			const data = await res.json();
-			return data;
+			const resData = await res.json();
+			return resData;
 		} else {
 			throw new Error(`${res.statusText} (${res.status})`);
 		}
 	}
 
 	async function makeGuess(cellIndex: number, world: number, level: number) {
-		const res = await fetch(`http://127.0.0.1:3000/braidoku/guess?tz=Australia/Melbourne&index=${cellIndex}&world=${world}&level=${level}`);
-		const data = await res.json();
+		const url = new URL("http://127.0.0.1:3000/braidoku/guess");
+		url.searchParams.append("tz", timezone);
+		url.searchParams.append("index", `${cellIndex}`);
+		url.searchParams.append("world", `${world}`);
+		url.searchParams.append("level", `${level}`);
+		if (data.mode == GameMode.unlimited) url.searchParams.append("seed", unlimitedSeed);
+
+		const res = await fetch(url);
+
+		const resData = await res.json();
 
 		if (guesses.length < 9 && canGuess(cellIndex)) {
 			const guess = {
 				index: cellIndex,
 				world,
 				level,
-				correct: data.correct,
+				correct: resData.correct,
 			};
 
 			guesses = [...guesses, guess];
-			$braidokuStorage.guesses = guesses;
+			if (data.mode == undefined) {
+				$braidokuStorage.guesses = guesses;
+			}
 		}
 
 		const newState = evaluateState();
 
-		if (data.mode == undefined && newState != "playing") {
+		if (resData.mode == undefined && newState != "playing") {
 			$braidokuStorage.incorrectHistory = [...$braidokuStorage.incorrectHistory, totalIncorrect];
 		}
 	}
@@ -88,7 +106,8 @@
 	onMount(() => {
 		if (data.mode == undefined) {
 			const today = new Date().toISOString().split("T")[0];
-			if ($braidokuStorage.today == undefined || $braidokuStorage.today != today) {
+
+			if ($braidokuStorage.today == undefined && $braidokuStorage.today != today) {
 				$braidokuStorage.today = today;
 
 				$braidokuStorage.guesses = [];
@@ -121,8 +140,14 @@
 {/snippet}
 
 {#if data.mode == GameMode.unlimited}
-	<div class="bg-yellow-500 p-2 text-center">
+	<div class="relative bg-yellow-500 p-2 text-center">
 		<h3>UNLIMITED MODE</h3>
+		<span
+			title="The board is randomised every time you load the page.&#013;Your progress is lost when you reload or leave!"
+			class="absolute top-1/2 right-3 -translate-y-1/2 cursor-help"
+		>
+			<CircleQuestionMarkIcon class="stroke-white drop-shadow-[1.5px_1.25px_black]" />
+		</span>
 	</div>
 {/if}
 
@@ -250,7 +275,7 @@
 	{/await}
 </Modal>
 
-<Modal bind:this={endModal} class="flex w-150! flex-col p-5 text-center">
+<Modal bind:this={endModal} class="flex w-150! flex-col items-center p-5 text-center">
 	{#if gameState == "win"}
 		<h2>You Win!</h2>
 		<h4>Your grade: <span class="text-green-400!">{grade}</span></h4>
@@ -262,5 +287,8 @@
 			You made <span class="text-red-400!">{totalIncorrect}</span> incorrect guesses and <span class="text-green-400!">{totalCorrect}</span> correct guesses across
 			<span>{new Set(guesses.map((guess) => guess.index)).size}</span> grid squares.
 		</p>
+	{/if}
+	{#if data.mode == GameMode.unlimited}
+		<button onclick={() => location.reload()} class="btn">Generate a new board</button>
 	{/if}
 </Modal>

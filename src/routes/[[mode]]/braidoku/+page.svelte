@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { PUBLIC_BACKEND_URL } from "$env/static/public";
 	import GameHeader from "$lib/components/GameHeader.svelte";
 	import LevelsModal from "$lib/components/LevelsModal.svelte";
 	import Modal from "$lib/components/Modal.svelte";
@@ -26,7 +27,7 @@
 	let grade: Grade = $derived(getGrade(totalIncorrect));
 
 	async function loadBoard() {
-		const url = new URL("http://127.0.0.1:3000/braidoku/board");
+		const url = new URL(`${PUBLIC_BACKEND_URL}/braidoku/board`);
 		url.searchParams.append("tz", timezone);
 		if (data.mode == GameMode.unlimited) url.searchParams.append("seed", unlimitedSeed);
 
@@ -41,7 +42,7 @@
 	}
 
 	async function makeGuess(cellIndex: number, world: number, level: number) {
-		const url = new URL("http://127.0.0.1:3000/braidoku/guess");
+		const url = new URL(`${PUBLIC_BACKEND_URL}/braidoku/guess`);
 		url.searchParams.append("tz", timezone);
 		url.searchParams.append("index", `${cellIndex}`);
 		url.searchParams.append("world", `${world}`);

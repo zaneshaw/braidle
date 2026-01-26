@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { PUBLIC_BACKEND_URL } from "$env/static/public";
 	import GameHeader from "$lib/components/GameHeader.svelte";
 	import LevelsModal from "$lib/components/LevelsModal.svelte";
 	import Modal from "$lib/components/Modal.svelte";
@@ -24,7 +25,7 @@
 	let grade: Grade = $derived(getGrade(totalIncorrect));
 
 	async function loadImage() {
-		const url = new URL("http://127.0.0.1:3000/puzzle_piece/image");
+		const url = new URL(`${PUBLIC_BACKEND_URL}/puzzle_piece/image`);
 		url.searchParams.append("tz", timezone);
 		if (data.mode == GameMode.unlimited) url.searchParams.append("seed", unlimitedSeed);
 
@@ -39,7 +40,7 @@
 	}
 
 	async function makeGuess(world: number, level: number) {
-		const url = new URL("http://127.0.0.1:3000/puzzle_piece/guess");
+		const url = new URL(`${PUBLIC_BACKEND_URL}/puzzle_piece/guess`);
 		url.searchParams.append("tz", timezone);
 		url.searchParams.append("world", `${world}`);
 		url.searchParams.append("level", `${level}`);

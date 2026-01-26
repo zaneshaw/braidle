@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { PUBLIC_BACKEND_URL } from "$env/static/public";
 	import Modal from "./Modal.svelte";
 
 	let { onSelect = () => {}, beforeClose = () => {}, hasPieces = false }: { onSelect?: (world: number, level: number) => void; beforeClose?: () => void; hasPieces?: boolean } = $props();
@@ -10,11 +11,11 @@
 	}
 
 	async function getLevels() {
-		const res = await fetch(`http://127.0.0.1:3000/levels`);
+		const res = await fetch(`${PUBLIC_BACKEND_URL}/levels`);
 		const data = await res.json();
 
 		if (hasPieces) {
-			const resFiltered = await fetch(`http://127.0.0.1:3000/levels?filter=hasPieces`);
+			const resFiltered = await fetch(`${PUBLIC_BACKEND_URL}/levels?filter=hasPieces`);
 			const dataFiltered = await resFiltered.json();
 
 			return { levels: data.levels, levelsFiltered: dataFiltered.levels };

@@ -1,4 +1,8 @@
 <script lang="ts">
+	import { GameMode } from "$lib/types.js";
+
+	let { data } = $props();
+
 	async function loadBoard() {
 		const res = await fetch("http://127.0.0.1:3000/braidoku/board?tz=Australia/Melbourne");
 
@@ -16,6 +20,12 @@
 		<span class="text-2xl">{index}</span>
 	</button>
 {/snippet}
+
+{#if data.mode == GameMode.unlimited}
+	<div class="bg-yellow-500 p-2 text-center">
+		<h3>UNLIMITED MODE</h3>
+	</div>
+{/if}
 
 <div class="bg-box px-5 py-3 text-center">
 	<h2>Solve today's Braidoku</h2>
@@ -72,19 +82,21 @@
 	{/await}
 </div>
 
-<div class="bg-box flex flex-col gap-2 px-5 py-3">
-	<h3 class="text-center">Stats</h3>
-	<div class="flex gap-2">
-		{#each [{ letter: "S", tip: "No fails" }, { letter: "A", tip: "1-3 fails" }, { letter: "B", tip: "4-6 fails" }, { letter: "C", tip: "7-8 fails" }, { letter: "F", tip: "9 fails" }] as grade}
-			<div class="flex aspect-square grow flex-col bg-neutral-600 p-1">
-				<span title={grade.tip} class="cursor-help bg-neutral-700 text-center text-lg leading-5">{grade.letter}</span>
-				<span class="flex grow items-center justify-center text-2xl">1</span>
-			</div>
-		{/each}
+{#if data.mode != GameMode.unlimited}
+	<div class="bg-box flex flex-col gap-2 px-5 py-3">
+		<h3 class="text-center">Stats</h3>
+		<div class="flex gap-2">
+			{#each [{ letter: "S", tip: "No fails" }, { letter: "A", tip: "1-3 fails" }, { letter: "B", tip: "4-6 fails" }, { letter: "C", tip: "7-8 fails" }, { letter: "F", tip: "9 fails" }] as grade}
+				<div class="flex aspect-square grow flex-col bg-neutral-600 p-1">
+					<span title={grade.tip} class="cursor-help bg-neutral-700 text-center text-lg leading-5">{grade.letter}</span>
+					<span class="flex grow items-center justify-center text-2xl">1</span>
+				</div>
+			{/each}
+		</div>
+		<div class="flex justify-between bg-neutral-600 px-3 py-1.5">
+			<span>Days played: 10</span>
+			<span>Wins: 10</span>
+			<span>Losses: 10</span>
+		</div>
 	</div>
-	<div class="flex justify-between bg-neutral-600 px-3 py-1.5">
-		<span>Days played: 10</span>
-		<span>Wins: 10</span>
-		<span>Losses: 10</span>
-	</div>
-</div>
+{/if}

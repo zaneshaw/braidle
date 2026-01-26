@@ -178,7 +178,7 @@
 	</div>
 {/if}
 
-<LevelsModal bind:this={levelsModal} onSelect={makeGuess} />
+<LevelsModal bind:this={levelsModal} onSelect={makeGuess} hasPieces />
 
 <Modal bind:this={endModal} class="flex w-150! flex-col items-center p-5 text-center">
 	{#if gameState == "win"}

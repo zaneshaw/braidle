@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Modal from "./Modal.svelte";
 
-	let { onSelect = () => {}, beforeClose = () => {} }: { onSelect?: (world: number, level: number) => void; beforeClose?: () => void } = $props();
+	let { onSelect = () => {}, beforeClose = () => {}, hasPieces = false }: { onSelect?: (world: number, level: number) => void; beforeClose?: () => void; hasPieces?: boolean } = $props();
 
 	let modal: Modal;
 
@@ -13,11 +13,18 @@
 		const res = await fetch(`http://127.0.0.1:3000/levels`);
 		const data = await res.json();
 
-		return data;
+		if (hasPieces) {
+			const resFiltered = await fetch(`http://127.0.0.1:3000/levels?filter=hasPieces`);
+			const dataFiltered = await resFiltered.json();
+
+			return { levels: data.levels, levelsFiltered: dataFiltered.levels };
+		}
+
+		return { levels: data.levels, levelsFiltered: data.levels };
 	}
 </script>
 
-{#snippet worldLevelButtons(world: any)}
+{#snippet worldLevelButtons(world: any, worldFiltered: any)}
 	<div>
 		<h4 class="text-nowrap">{world.title}</h4>
 		{#each world.levels as level}
@@ -27,7 +34,8 @@
 
 					modal.close();
 				}}
-				class="flex w-full cursor-pointer items-center gap-1.5 p-1 text-nowrap hover:bg-neutral-600"
+				class:filteredOut={!worldFiltered.levels.find((levelFiltered: any) => level.level == levelFiltered.level)}
+				class="flex w-full cursor-pointer items-center gap-1.5 p-1 text-nowrap hover:bg-neutral-600 [.filteredOut]:pointer-events-none [.filteredOut]:opacity-25"
 			>
 				<div class="size-6 bg-neutral-500"></div>
 				<span>{world.world}-{level.level}{level.name ? `: ${level.name}` : ""}</span>
@@ -44,17 +52,17 @@
 			<h2 class="text-center">Make Your Guess</h2>
 			<div class="flex gap-10">
 				<div class="flex flex-col gap-5">
-					{@render worldLevelButtons(data.levels[0])}
-					{@render worldLevelButtons(data.levels[1])}
+					{@render worldLevelButtons(data.levels[0], data.levelsFiltered[0])}
+					{@render worldLevelButtons(data.levels[1], data.levelsFiltered[1])}
 				</div>
 				<div class="flex flex-col gap-5">
-					{@render worldLevelButtons(data.levels[2])}
-					{@render worldLevelButtons(data.levels[3])}
+					{@render worldLevelButtons(data.levels[2], data.levelsFiltered[2])}
+					{@render worldLevelButtons(data.levels[3], data.levelsFiltered[3])}
 				</div>
 				<div class="flex flex-col gap-5">
-					{@render worldLevelButtons(data.levels[4])}
-					{@render worldLevelButtons(data.levels[5])}
-					{@render worldLevelButtons(data.levels[6])}
+					{@render worldLevelButtons(data.levels[4], data.levelsFiltered[4])}
+					{@render worldLevelButtons(data.levels[5], data.levelsFiltered[5])}
+					{@render worldLevelButtons(data.levels[6], data.levelsFiltered[6])}
 				</div>
 			</div>
 		</div>

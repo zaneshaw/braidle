@@ -43,20 +43,25 @@ p {
 
 h1,
 h2,
-h3 {
-	@apply text-white [font-variant:small-caps];
+h3,
+h4 {
+	@apply tracking-wide text-white [font-variant:small-caps];
 }
 
 h1 {
-	@apply text-8xl tracking-wide text-shadow-[3px_3px_black];
+	@apply text-8xl text-shadow-[3px_3px_black];
 }
 
 h2 {
-	@apply text-3xl tracking-wide text-shadow-[1.5px_1.25px_black];
+	@apply text-3xl text-shadow-[1.5px_1.25px_black];
 }
 
 h3 {
-	@apply text-2xl tracking-wide text-shadow-[1.5px_1.25px_black];
+	@apply text-2xl text-shadow-[1.5px_1.25px_black];
+}
+
+h4 {
+	@apply text-xl text-shadow-[1.5px_1.25px_black];
 }
 
 button {

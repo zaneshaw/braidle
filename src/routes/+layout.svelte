@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { afterNavigate } from "$app/navigation";
+	import { onMount } from "svelte";
 	import "./layout.css";
 
 	let { children } = $props();
@@ -17,6 +18,21 @@
 	afterNavigate(() => {
 		interactionArrow.style.opacity = "0";
 	});
+
+	function deleteOldLocalStorage(key: string) {
+		const storage = localStorage.getItem(key);
+		if (storage) {
+			const data = JSON.parse(storage);
+			if ("lastPlayed" in data) {
+				localStorage.removeItem(key);
+			}
+		}
+	}
+
+	onMount(() => {
+		deleteOldLocalStorage("braidoku");
+		deleteOldLocalStorage("puzzle_piece");
+	})
 </script>
 
 <svelte:document onmousemove={handleMouseMove} />

@@ -102,9 +102,10 @@
 
 	onMount(() => {
 		if (data.mode == undefined) {
-			const today = new Date().toISOString().split("T")[0];
+			const date = new Date();
+			const today = new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().split("T")[0];
 
-			if ($braidokuPersisted.today == undefined && $braidokuPersisted.today != today) {
+			if ($braidokuPersisted.today != today) {
 				$braidokuPersisted.today = today;
 
 				$braidokuPersisted.guesses = [];

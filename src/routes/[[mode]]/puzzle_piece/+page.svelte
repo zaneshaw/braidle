@@ -92,9 +92,10 @@
 
 	onMount(() => {
 		if (data.mode == undefined) {
-			const today = new Date().toISOString().split("T")[0];
+			const date = new Date();
+			const today = new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().split("T")[0];
 
-			if ($puzzlePiecePersisted.today == undefined && $puzzlePiecePersisted.today != today) {
+			if ($puzzlePiecePersisted.today != today) {
 				$puzzlePiecePersisted.today = today;
 
 				$puzzlePiecePersisted.guesses = [];
